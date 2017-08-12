@@ -1,13 +1,22 @@
 language: node_js
+sudo: required
 node_js:
   - stable
+
+
+env:
+  - CONTAINER_NAME=lbuzz/nightmare-server
 
 services:
   - docker
 
-install:
-  - yarn -v
-  - yarn --frozen-lockfile
 
 script:
-  - yarn run build
+  - npm run build
+
+
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker push "$CONTAINER_NAME";
+    fi
