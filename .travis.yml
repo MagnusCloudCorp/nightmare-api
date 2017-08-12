@@ -13,6 +13,8 @@ services:
 
 script:
   - npm run build
+  - docker build -t $CONTAINER_NAME .
+
 
 
 after_success:
