@@ -6,6 +6,7 @@ services:
   - docker
 
 install:
+  - yarn -v
   - yarn --frozen-lockfile
 
 script:
