@@ -1,0 +1,14 @@
+/.project
+node_modules/
+/dist
+/coverage
+/**/dist/
+/**/release/
+/**/coverage/
+/**/.yarn/
+
+/.yarn
+**/node_modules/
+ts-node-*
+
+*.log

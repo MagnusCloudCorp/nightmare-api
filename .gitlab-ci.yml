@@ -1,0 +1,25 @@
+image: registry.gitlab.com/mg-home/node-docker:ci
+services:
+- docker:dind
+
+stages:
+- build
+- test
+- release
+- deploy
+
+variables:
+  CONTAINER_NAME: registry.gitlab.com/lbuzz/nightmare-server
+  CONTAINER_RELEASE_IMAGE: $CONTAINER_NAME:latest
+
+before_script:
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+  - yarn
+release-image:
+  stage: release
+  script:
+    - yarn run build
+    - docker build --pull -t $CONTAINER_RELEASE_IMAGE .
+    - docker push $CONTAINER_RELEASE_IMAGE
+  only:
+    - master
