@@ -5,7 +5,7 @@ node_js:
 
 
 env:
-  - CONTAINER_NAME=lbuzz/nightmare-server
+  - CONTAINER_NAME=benabs/lbuzz-nightmare
 
 services:
   - docker
