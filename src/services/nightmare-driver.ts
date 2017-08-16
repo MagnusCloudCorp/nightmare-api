@@ -1,19 +1,19 @@
 
-
+import {Nightmare} from './nightmare'
 
 
 export class NightmareDriver {
 
 
     promise: Promise<any>
-    constructor(public nightmare: any, public reqID: number) {
+    constructor(private  _nightmare: Nightmare, public reqID: number) {
 
     }
 
 
-    goto(url: String) {
+    goto(url: string) {
         console.log(this.reqID, 'client.goto', url);
-        this.nightmare = this.nightmare.goto(url);
+        this._nightmare = this._nightmare.goto(url);
         // .inject('js', 'node_modules/jquery/dist/jquery.min.js')
         // .inject('js', 'jqextract.js');
         return this;
@@ -21,8 +21,8 @@ export class NightmareDriver {
 
     extract(fn: Function) {
         console.log(this.reqID, 'client.extract');
-        this.nightmare = this.nightmare.evaluate(fn);
-        return this.nightmare;
+        this._nightmare = this._nightmare.evaluate(fn as any);
+        return this._nightmare;
     }
 
 
@@ -46,6 +46,11 @@ export class NightmareDriver {
             console.log(this.reqID, 'server.finish');
         });
         return this;
+    }
+
+
+    nightmare(): Nightmare{
+        return this._nightmare;
     }
 
 }
