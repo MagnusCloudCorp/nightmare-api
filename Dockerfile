@@ -17,5 +17,5 @@ RUN yarn
 
 COPY ./dist .
 
-CMD /usr/bin/xvfb-run node ./index.js
+CMD /usr/bin/xvfb-run --auto-servernum node ./index.js
 EXPOSE 3000
