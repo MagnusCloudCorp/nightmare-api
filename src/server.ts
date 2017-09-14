@@ -16,7 +16,12 @@ var
     sprintf = require('sprintf'),
     _ = require('lodash'),
     Nightmare = require('nightmare'),
-    nightmareOpts = { show: false },
+    nightmareOpts = {
+        show: false,
+        switches: {
+            'ignore-certificate-errors': true
+        }
+    },
     nightmare = new Nightmare(nightmareOpts);
 
 app.use(bodyParser.text({ type: "*/*" }));
