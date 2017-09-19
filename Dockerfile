@@ -1,21 +1,15 @@
 FROM realogic/nightmare
 MAINTAINER benabbousalim
 
-# RUN apt-get update -y && \
-#   apt-get install -y xvfb x11-xkb-utils xfonts-100dpi xfonts-75dpi \
-#   xfonts-scalable xfonts-cyrillic x11-apps clang libdbus-1-dev \
-#   libgtk2.0-dev libnotify-dev libgnome-keyring-dev libgconf2-dev \
-#   libasound2-dev libcap-dev libcups2-dev libxtst-dev libxss1 \
-#   libnss3-dev gcc-multilib g++-multilib && \
-#   apt-get clean
+RUN npm install -g pm2
 
 WORKDIR /opt/nightmare-server
 COPY ./package.json ./package.json
 COPY ./yarn.lock ./yarn.lock
 
-RUN yarn
-
+RUN npm install --production
+COPY pm2.json .
 COPY ./dist .
 
-CMD /usr/bin/xvfb-run --auto-servernum node ./index.js
+CMD /usr/bin/xvfb-run --auto-servernum pm2-docker pm2.json
 EXPOSE 3000
