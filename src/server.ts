@@ -6,7 +6,7 @@ import { NightmareDriver } from './services/nightmare-driver';
 import { Express, Request, Response } from 'express';
 
 import { join } from 'path';
-
+import { TemplateService } from './services/template-service';
 
 
 var
@@ -34,6 +34,10 @@ var requestId = 0;
 app.get('/*', handleExpressReq);
 
 app.post('/*', handleExpressReq);
+
+
+const templateService = new TemplateService();
+templateService.loadTemplates();
 
 // const server = app.listen(3000, function () {
 //     console.log('server.js listening on port 3000!');
@@ -71,27 +75,19 @@ function dispatchNext() {
 
         if (req.query.template) {
             const templatePath = join(__dirname, '..', 'templates', req.query.template + '.js');
-            fs.readFile(templatePath, 'utf8', (err: Error, template: string) => {
-                if (err) {
-                    // Presumably template not found.
-                    errorResponse(400, err);
-                }
-                try {
-                    var fnStr = sprintf(template, req.query);
-
-                } catch (e) {
-                    console.log(e);
-                    if (_.indexOf(e, 'does not exist')) {
-                        // Presumably missing formatter args.
-                        errorResponse(400, e);
-                    } else {
-                        errorResponse(500, e);
-                    }
-                }
-
+            try {
+                let fnStr = templateService.getTemplate(req.query.template, req.query.url);
                 return driveRequest(fnStr, reqId);
-            });
+            } catch (error) {
+                if (error.message === 'TEMPLATE.NOT.FOUND') {
+                    errorResponse(400, error);
+                }
 
+                if (error.message === 'NOT A FUNCTION') {
+                    errorResponse(500, error);
+                }
+
+            }
         } else {
             return driveRequest(req.body, reqId);
         }
