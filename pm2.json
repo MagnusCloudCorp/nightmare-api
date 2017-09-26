@@ -3,6 +3,8 @@
         {
             "name": "nightmare-api",
             "script": "index.js",
+            "instances": 4,
+            "exec_mode": "cluster",
             "env_production": {
                 "NODE_ENV": "production"
             }
