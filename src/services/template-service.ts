@@ -10,8 +10,7 @@ export class TemplateService {
     private templateCache: { [x: string]: any } = {};
 
 
-    loadTemplates() {
-        const templateDir = path.join(process.cwd(), 'templates');
+    loadTemplates(templateDir:string) {
         let templates = fs.readdirSync(templateDir, 'UTF-8')
             .filter((file: string) => file.endsWith('.js')).map((file: string) => path.join(templateDir, file));
 

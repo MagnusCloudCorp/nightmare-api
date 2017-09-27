@@ -36,8 +36,13 @@ app.get('/*', handleExpressReq);
 app.post('/*', handleExpressReq);
 
 
+
+if (!process.env.TEMPLATE_PATH) {
+    throw new Error('TEMPLATE.PATH.NOT.SPECIFIED')
+}
+
 const templateService = new TemplateService();
-templateService.loadTemplates();
+templateService.loadTemplates(process.env.TEMPLATE_PATH);
 
 // const server = app.listen(3000, function () {
 //     console.log('server.js listening on port 3000!');
